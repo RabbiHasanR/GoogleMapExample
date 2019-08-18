@@ -14,8 +14,15 @@
         android:layout_height="wrap_content"
         android:text="Save Location"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="150dp"
-        android:layout_marginTop="100dp"/>
+        />
+    <Button
+        android:id="@+id/search_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Location"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"

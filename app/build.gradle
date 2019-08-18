@@ -35,6 +35,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:18.1.0'
     //google location
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
     //Google Play Services for Maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -44,6 +45,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:20.2.0'
     //marker clustering
     implementation 'com.google.maps.android:android-maps-utils:0.5'
+
+    //geoFire
+    implementation 'com.firebase:geofire-android:3.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

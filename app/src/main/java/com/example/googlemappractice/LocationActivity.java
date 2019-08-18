@@ -14,6 +14,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -26,6 +28,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -264,11 +269,13 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     @OnClick(R.id.save_btn)
     void saveLocation(){
         saveUserLocation();
+        saveLocationOndatabase();
     }
 
     private void saveUserLocation(){
         FirebaseFirestore mDb=FirebaseFirestore.getInstance();
         String id = mDb.collection("User Locations").document().getId();
+        userLocation.setDocId(id);
         if(userLocation != null){
             DocumentReference locationRef = mDb
                     .collection("User Locations")
@@ -283,5 +290,36 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             });
         }
+    }
+
+    private void saveLocationOndatabase(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Locations");
+        String id=ref.push().getKey();
+        Location location=new Location();
+        location.setLocationId(id);
+        location.setUserId(userId);
+        ref.child(id).setValue(location);
+        GeoFire geoFire = new GeoFire(ref.child("item_locations"));
+        geoFire.setLocation(id, new GeoLocation(mMarker.getPosition().latitude, mMarker.getPosition().longitude), new GeoFire.CompletionListener() {
+            @Override
+            public void onComplete(String key, DatabaseError error) {
+                if (error != null) {
+                    System.err.println("There was an error saving the location to GeoFire: " + error);
+                } else {
+                    System.out.println("Location saved on server successfully!");
+                }
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(LocationActivity.this,
+                MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 }

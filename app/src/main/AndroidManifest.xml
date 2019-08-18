@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LocationActivity"></activity>
+        <activity android:name=".SearachActivity"></activity>
+        <activity android:name=".LocationActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -38,6 +39,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".LocationService"
+            android:stopWithTask="true" />
     </application>
 
 </manifest>
